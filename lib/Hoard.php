@@ -161,14 +161,26 @@ class Hoard
 		
 		// Auto generate some data from the environment
 		$data['event']				= $event;
-		$data['host']				= $_SERVER['HTTP_HOST'];
-		$data['server']				= array('name' => $_SERVER['SERVER_NAME'], 'ipv4' => $_SERVER['SERVER_ADDR']);
+		if (isset($_SERVER['HTTP_HOST']))
+		{
+			$data['host']				= $_SERVER['HTTP_HOST'];
+		}
+		if (isset($_SERVER['SERVER_NAME']) && isset($_SERVER['REMOTE_ADDR']))
+		{
+			$data['server'] = array(
+				'name' => $_SERVER['SERVER_NAME'],
+				'ipv4' => $_SERVER['SERVER_ADDR']
+			);
+		}
 		$data['appkey']				= self::$appkey;
 		
 		// TODO: Parse / Verify Data
 		if (array_key_exists('file', $data))
 		{
-			$data['file'] = str_replace(DOCROOT, '', $data['file']);
+			if (defined(DOCROOT))
+			{
+				$data['file'] = str_replace(DOCROOT, '', $data['file']);
+			}
 		}
 		
 		// Track sessions for tracking breadcrumbs style events
@@ -184,7 +196,7 @@ class Hoard
 		
 		// Check for special params
 		$async = true;
-		if (array_key_exists('$async', $data) && $data['$async'] === false)
+		if (isset($data['$async']) && $data['$async'] === false)
 		{
 			$async = false;
 			unset($data['$async']);
