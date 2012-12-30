@@ -89,7 +89,7 @@ class Hoard
 		$action = isset($options['action']) ? $options['action'] : 'track';
 		$method = $action === 'track' ? 'POST' : 'GET';
 		$data = isset($options['data']) ? $options['data'] : false;
-		$query = isset($options['query']) ? $options['query'] : array();
+		$query = isset($options['query']) ? $options['query'] : '';
 		$event = isset($options['event']) ? $options['event'] : '';
 		if ($query)
 		{	
