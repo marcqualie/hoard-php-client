@@ -177,7 +177,7 @@ class Hoard
 		// TODO: Parse / Verify Data
 		if (array_key_exists('file', $data))
 		{
-			if (defined(DOCROOT))
+			if (defined('DOCROOT'))
 			{
 				$data['file'] = str_replace(DOCROOT, '', $data['file']);
 			}
