@@ -2,7 +2,13 @@
     "name": "marcqualie/hoard",
     "type": "library",
     "description": "Hoard client library for PHP",
-    "keywords": ["log", "logging", "stats", "analytics"],
+    "keywords": [
+        "log",
+        "logging",
+        "stats",
+        "analytics",
+        "mongodb"
+    ],
     "homepage": "http://github.com/marcqualie/hoard-php-client",
     "license": "MIT",
     "authors": [

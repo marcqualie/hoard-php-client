@@ -4,7 +4,7 @@
  * Store raw data for later querying
  *
  * Usage:
- *	
+ *
  *		$event = Hoard::track('php_syntax_error', array(
  *			'uid'		=> 123456,
  *			'file'		=> '/path/to/root/index.php'
@@ -16,15 +16,16 @@
  *
  * @version 0.0.1
  * @author Marc Qualie <http://marcqualie.com>
+ * @deprecated Will be replaced by version 1.0.0
  */
 
 class Hoard
 {
-	
+
 	/* Application Settings */
 	public static $appkey                   = '';
 	public static $secret                   = '';
-	
+
 	/* Remote server settings */
 	public static $server                   = '';
 	public static $version                  = '0.0.1';
@@ -32,7 +33,7 @@ class Hoard
 
 	public static $error                    = '';
 	public static $last_raw_response        = '';
-		
+
 	/**
 	 * Initialize Hoard Config
 	 *
@@ -92,7 +93,7 @@ class Hoard
 		$query = isset($options['query']) ? $options['query'] : '';
 		$event = isset($options['event']) ? $options['event'] : '';
 		if ($query)
-		{	
+		{
 			//$query['secret'] = self::$secret;
 			//$data = 'appkey=' . self::$appkey;
 			$query = '?appkey=' . self::$appkey . '&' . http_build_query($query);
@@ -146,7 +147,7 @@ class Hoard
 		}
 		return isset($options['async']) ? true : false;
 	}
-	
+
 	/**
 	 * Track events
 	 *
@@ -156,9 +157,9 @@ class Hoard
 	 */
 	public static function track ($event, array $data)
 	{
-		
+
 		if ( ! self::verify()) return false;
-		
+
 		// Auto generate some data from the environment
 		$data['event']				= $event;
 		if (isset($_SERVER['HTTP_HOST']))
@@ -173,7 +174,7 @@ class Hoard
 			);
 		}
 		$data['appkey']				= self::$appkey;
-		
+
 		// TODO: Parse / Verify Data
 		if (array_key_exists('file', $data))
 		{
@@ -182,18 +183,18 @@ class Hoard
 				$data['file'] = str_replace(DOCROOT, '', $data['file']);
 			}
 		}
-		
+
 		// Track sessions for tracking breadcrumbs style events
 		$sess = session_id();
 		if ($sess)
 		{
 			$data['sess'] = $sess;
 		}
-		
+
 		// Generate Signature and encode
 		$data['hash'] = md5(uniqid());
 		$data['sig'] = sha1(self::$secret . $data['hash']);
-		
+
 		// Check for special params
 		$async = true;
 		if (isset($data['$async']) && $data['$async'] === false)
@@ -201,7 +202,7 @@ class Hoard
 			$async = false;
 			unset($data['$async']);
 		}
-		
+
 		// Format data into post string
 		$postfields = array(
 			'format' => 'json',
@@ -213,7 +214,7 @@ class Hoard
 			$post_params[] = $key . '=' . urlencode($val);
 		}
 		$post_string = implode('&', $post_params);
-		
+
 		// Send Data
 		$req = self::req(array(
 			'action'      => 'track',
@@ -223,12 +224,12 @@ class Hoard
 
 		// Trigger Event
 		self::dispatchEvent($event, $data);
-		
+
 		// Output
 		return $async ? true : $req;
-		
+
 	}
-	
+
 	/**
 	 * Find data based on input params
 	 *
@@ -254,7 +255,7 @@ class Hoard
 
 		return $req;
 	}
-	
+
 	/**
 	 * Stats
 	 *
@@ -262,7 +263,7 @@ class Hoard
 	 */
 	public static function stats ()
 	{
-		
+
 	}
 
 	/**
@@ -325,5 +326,5 @@ class Hoard
 			throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
 		});
 	}
-	
+
 }
