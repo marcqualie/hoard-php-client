@@ -4,9 +4,11 @@ namespace Hoard;
 
 class Client {
 
+    const VERSION = '0.1.0';
+
     protected $instance_id = null;
-    public $server = 'https://demo.hoardhq.com';
-    public $apikey = '';
+    protected $server = 'https://demo.hoardhq.com';
+    protected $apikey = '';
 
 
     /**
@@ -21,6 +23,24 @@ class Client {
                 $this->$key = $value;
             }
         }
+    }
+
+
+    /**
+     * Get Server String
+     */
+    public function getServer()
+    {
+        return $this->server;
+    }
+
+
+    /**
+     * Get API Key
+     */
+    public function getApiKey()
+    {
+        return $this->apikey;
     }
 
 
