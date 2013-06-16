@@ -5,8 +5,8 @@ namespace Hoard;
 class Bucket
 {
 
-    public $client;
-    public $name;
+    protected $client;
+    protected $name;
 
     public function __construct($client, $name)
     {
@@ -46,6 +46,7 @@ class Bucket
                     'time' => time()
                 ),
                 'event' => $event_name,
+                'bucket' => $this->name,
                 'data' => $data
             )
         );
@@ -79,7 +80,11 @@ class Bucket
         // Decode Response
         if ($response) {
             list($headers, $content) = explode("\n\n", str_replace("\r", '', $response), 2);
-            $response = json_decode(Utils::http_chunked_decode($content), true);
+            $decoded = Utils::http_chunked_decode($content);
+            $response = json_decode($decoded, true);
+            if ( ! $response) {
+                throw new Exception($decoded);
+            }
         }
 
         return array(
