@@ -21,15 +21,15 @@ class HoardServiceProvider implements ServiceProviderInterface
 				throw new Exception('A valid API Key must be provided.');
 			}
 
-			$instance = new \Hoard\Client(array(
-				'server' => $app['hoard.server'],
-				'apikey' => $app['hoard.apikey']
-			));
-
 			if (!isset($app['hoard.bucket']))
 			{
 				throw new Exception('A valid bucket ID must be suplied.');
 			}
+
+			$instance = new \Hoard\Client(array(
+				'server' => $app['hoard.server'],
+				'apikey' => $app['hoard.apikey']
+			));
 
 			return $instance->getBucket($app['hoard.bucket']);
 		});
