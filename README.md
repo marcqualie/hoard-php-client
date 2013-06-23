@@ -16,3 +16,14 @@ $response = $bucket->track('pageview', array(
 ));
 echo 'Tracking ID: ' . (String) $response['_id'];
 ```
+
+
+## Silex Service Provider
+
+``` php
+$app->register(new Silex\Provider\HoardServiceProvider(), array(
+    'hoard.server' => 'XXX',
+    'hoard.apikey' => 'XXX',
+    'hoard.bucket' => 'XXX'
+));
+```
