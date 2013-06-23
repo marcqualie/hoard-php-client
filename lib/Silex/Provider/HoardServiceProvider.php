@@ -5,6 +5,7 @@ namespace Silex\Provider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Hoard\Client as HoardClient;
+use Hoard\Exception;
 
 class HoardServiceProvider implements ServiceProviderInterface
 {
