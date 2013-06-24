@@ -1,6 +1,8 @@
 <?php
 
 namespace Hoard;
+use Hoard\Driver\HttpDriver;
+use Hoard\Driver\DriverInterface;
 
 class Client {
 
@@ -9,6 +11,7 @@ class Client {
     protected $instance_id = null;
     protected $server = 'https://demo.hoardhq.com';
     protected $apikey = '';
+    protected $bucket = null;
 
 
     /**
@@ -23,6 +26,7 @@ class Client {
                 $this->$key = $value;
             }
         }
+        $this->setDriver(new HttpDriver());
     }
 
 
@@ -49,10 +53,31 @@ class Client {
      * @param  String $slug       Slug for the bucket
      * @return Hoard\Bucket       Bucket Instance
      */
-    public function getBucket($slug)
+    public function getBucket($slug = null)
     {
-        $bucket = new Bucket($this, $slug);
-        return $bucket;
+        if (! $slug) {
+            return $this->bucket;
+        }
+        $this->bucket = new Bucket($this, $slug);
+        return $this->bucket;
+    }
+
+
+    /**
+     * Get Driver
+     */
+    public function getDriver()
+    {
+        return $this->driver;
+    }
+
+    /**
+     * Set Driver
+     */
+    public function setDriver(DriverInterface $driver)
+    {
+        $this->driver = $driver;
+        $this->driver->client = $this;
     }
 
 }
