@@ -1,8 +1,8 @@
 <?php
 
 namespace Hoard;
+use Hoard\Driver\BaseDriver;
 use Hoard\Driver\HttpDriver;
-use Hoard\Driver\DriverInterface;
 
 class Client {
 
@@ -74,7 +74,7 @@ class Client {
     /**
      * Set Driver
      */
-    public function setDriver(DriverInterface $driver)
+    public function setDriver(BaseDriver $driver)
     {
         $this->driver = $driver;
         $this->driver->client = $this;

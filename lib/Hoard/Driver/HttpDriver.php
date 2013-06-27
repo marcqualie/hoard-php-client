@@ -4,7 +4,8 @@ namespace Hoard\Driver;
 use Hoard\Utils;
 use Hoard\Exception;
 
-class HttpDriver implements DriverInterface {
+class HttpDriver extends BaseDriver
+{
 
     public function track($event, array $data = array(), array $options = array())
     {
