@@ -36,17 +36,24 @@ class Payload
 
 
     /**
-     *
+     * Return payload for use in drivers
      */
     public function asArray()
     {
-        return array(
+        $payload = array(
             'v' => 1,
             't' => microtime(true),
             'e' => $this->event,
             's' => $this->bucket->getName(),
             'd' => $this->data
         );
+        if (isset($this->data['$id'])) {
+            $payload['x'] = $this->data['$id'];
+            unset($this->data['$id']);
+        } elseif (class_exists('\MongoId')) {
+            $payload['x'] = new \MongoId();
+        }
+        return $payload;
     }
 
 
