@@ -7,6 +7,12 @@ use Hoard\Exception;
 class BaseDriver
 {
 
+    // Default Options
+    protected $default_options = array(
+        'async' => true
+    );
+
+
     /**
      * Event Tracker
      *
@@ -19,6 +25,18 @@ class BaseDriver
     public function track($event, array $data = array(), array $options = array())
     {
 
+    }
+
+
+    /**
+     *
+     */
+    public function setOptions($options)
+    {
+        return array_merge(
+            $this->default_options,
+            $options
+        );
     }
 
 }

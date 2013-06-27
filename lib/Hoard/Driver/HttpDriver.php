@@ -3,6 +3,8 @@
 namespace Hoard\Driver;
 use Hoard\Utils;
 use Hoard\Exception;
+use Hoard\Event\Payload;
+use Hoard\Event\Response;
 
 class HttpDriver extends BaseDriver
 {
@@ -10,36 +12,19 @@ class HttpDriver extends BaseDriver
     public function track($event, array $data = array(), array $options = array())
     {
 
-        // Apply Options
-        $options = array_merge(
-            array(
-                'async' => true
-            ),
-            $options
-        );
-
-        // Verify Input
+        // Get external interfaces
+        $options = $this->setOptions($options);
         $client = $this->client;
         $server = $client->getServer();
         $apikey = $client->getApiKey();
-        $event = trim(str_replace(' ', '-', strtolower($event)));
-        if (! $event) {
-            throw new Exception('Event name is required');
-        }
+
+        // Payload (will verify input)
+        $payload = new Payload($client->getBucket(), $event, $data);
+        $post = $payload->asJSON();
 
         // API Endpoint
         $url_string = $server . '/api/track?apikey=' . $apikey;
         $url = parse_url($url_string);
-        $post = json_encode(
-            array(
-                'meta' => array(
-                    'time' => time()
-                ),
-                'event' => $event,
-                'bucket' => $client->getBucket()->getName(),
-                'data' => $data
-            )
-        );
 
         // Make Request
         $fp = fsockopen(
@@ -72,15 +57,12 @@ class HttpDriver extends BaseDriver
             list($headers, $content) = explode("\n\n", str_replace("\r", '', $response), 2);
             $decoded = Utils::http_chunked_decode($content);
             $response = json_decode($decoded, true);
-            if ( ! $response) {
-                throw new Exception($decoded);
+            if (! $response) {
+                return new Response(Response::ERROR, 'No Response Data');
             }
         }
 
-        return array(
-            'ok' => 1,
-            'response' => $response
-        );
+        return new Response(Response::OK, 'Event Tracked');
     }
 
 }

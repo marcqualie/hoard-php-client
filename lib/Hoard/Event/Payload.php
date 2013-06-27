@@ -1,6 +1,7 @@
 <?php
 
 namespace Hoard\Event;
+use Hoard\Exception;
 
 class Payload
 {
@@ -16,9 +17,21 @@ class Payload
      */
     public function __construct($bucket, $event, array $data = array())
     {
+
+        // Set internal vars
+        $event = trim(str_replace(' ', '-', strtolower($event)));
         $this->bucket = $bucket;
         $this->event = $event;
         $this->data = $data;
+
+        if (! $event) {
+            throw new Exception('Event name is required');
+        }
+        if (! preg_match('/^[a-z0-9\-\.]+$/i', $event)) {
+            throw new Exception('Invalid syntax for Event Name');
+        }
+
+
     }
 
 
@@ -32,7 +45,7 @@ class Payload
                 'time' => time()
             ),
             'event' => $this->event,
-            'bucket' => $this->getName(),
+            'bucket' => $this->bucket->getName(),
             'data' => $this->data
         );
     }

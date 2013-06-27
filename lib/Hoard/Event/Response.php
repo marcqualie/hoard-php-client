@@ -7,7 +7,7 @@ class Response
 
     // Status Codes
     const OK = 1;
-    const FAIL = 2;
+    const ERROR = 2;
     const TIMEOUT = 4;
 
     // Internal Variables
@@ -21,8 +21,11 @@ class Response
      */
     public function __construct($code, $message)
     {
-        $this->code = $code;
-        $this->message = $message;
+        $this->_code = $code;
+        $this->_message = $message;
+        if ($code === self::OK) {
+            $this->_ok = 1;
+        }
     }
 
 
