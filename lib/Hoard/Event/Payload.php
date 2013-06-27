@@ -24,13 +24,13 @@ class Payload
         $this->event = $event;
         $this->data = $data;
 
+        // Verify Data
         if (! $event) {
             throw new Exception('Event name is required');
         }
         if (! preg_match('/^[a-z0-9\-\.]+$/i', $event)) {
             throw new Exception('Invalid syntax for Event Name');
         }
-
 
     }
 
@@ -41,12 +41,11 @@ class Payload
     public function asArray()
     {
         return array(
-            'meta' => array(
-                'time' => time()
-            ),
-            'event' => $this->event,
-            'bucket' => $this->bucket->getName(),
-            'data' => $this->data
+            'v' => 1,
+            't' => microtime(true),
+            'e' => $this->event,
+            's' => $this->bucket->getName(),
+            'd' => $this->data
         );
     }
 

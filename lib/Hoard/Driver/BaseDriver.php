@@ -29,7 +29,9 @@ class BaseDriver
 
 
     /**
-     *
+     * Set driver options
+     * @param  array $options Custom driver options
+     * @return array
      */
     public function setOptions($options)
     {
