@@ -22,9 +22,6 @@ class HoardServiceProvider implements ServiceProviderInterface
                 if (! isset($app['hoard.apikey'])) {
                     throw new Exception('A valid API Key must be provided.');
                 }
-                if (! isset($app['hoard.bucket'])) {
-                    throw new Exception('A valid bucket ID must be suplied.');
-                }
 
                 $instance = new HoardClient(
                     array(
@@ -33,12 +30,7 @@ class HoardServiceProvider implements ServiceProviderInterface
                     )
                 );
 
-                if (isset($app['hoard.driver']))
-                {
-                    $instance->setDriver($app['hoard.driver']);
-                }
-
-                return $instance->getBucket($app['hoard.bucket']);
+                return $instance;
             }
         );
     }

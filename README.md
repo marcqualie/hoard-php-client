@@ -10,11 +10,12 @@ $hoard = new Hoard\Client(array(
     'server' => 'http://username.hoardhq.com';
     'apikey' => 'XXX'
 ));
+$hoard->setDriver(new Hoard\Driver\GearmanDriver());
 $bucket = $hoard->getBucket('analytics');
 $response = $bucket->track('pageview', array(
     'uri' => '/'
 ));
-echo 'Tracking ID: ' . (String) $response['_id'];
+echo 'Tracking ID: ' . $response->id;
 ```
 
 
@@ -22,8 +23,14 @@ echo 'Tracking ID: ' . (String) $response['_id'];
 
 ``` php
 $app->register(new Silex\Provider\HoardServiceProvider(), array(
-    'hoard.server' => 'XXX',
+    'hoard.server' => 'http://username.hoardhq.com',
     'hoard.apikey' => 'XXX',
-    'hoard.bucket' => 'XXX'
 ));
+$app['hoard']->setDriver(new Hoard\Driver\GearmanDriver());
+$bucket = $app['hoard']->getBucket('analytics');
+$response = $bucket->track('pageview', array(
+    'uri' => '/'
+));
+echo 'Tracking ID: ' . $response->id;
+
 ```
