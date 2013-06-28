@@ -3,6 +3,8 @@
 namespace Hoard\Driver;
 use Hoard\Utils;
 use Hoard\Exception;
+use Hoard\Event\Payload;
+use Hoard\Event\Response;
 
 class GearmanDriver implements DriverInterface {
 
@@ -27,19 +29,29 @@ class GearmanDriver implements DriverInterface {
 
     public function track($event, array $data = array(), array $options = array())
     {
+        // Get external interfaces
+        $options = $this->setOptions($options);
+        $client = $this->client;
+        $server = $client->getServer();
+        $apikey = $client->getApiKey();
+
+        // Payload (will verify input)
+        $payload = new Payload($client->getBucket(), $event, $data);
+        $post = $payload->asJSON();
+
         $gearmanMethod = 'doBackground';
         if (isset($options['async']) && ! $options['async'])
         {
             $gearmanMethod = 'doNormal';
         }
 
-        $response = $client->$gearmanMethod('track', array(
-            'event' => $event,
-            'data' => $data
-        ));
-        return array(
-            'ok' => (int) $response,
-            'response' => $response
-        );
+        $job = 'track';
+        if (isset($options['job']))
+        {
+            $job = $options['job'];
+        }
+
+        $response = $client->$gearmanMethod($job, $post);
+        return new Response(Response::OK, 'Event Added To Queue');
     }
 }
