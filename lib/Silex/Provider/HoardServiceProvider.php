@@ -33,6 +33,11 @@ class HoardServiceProvider implements ServiceProviderInterface
                     )
                 );
 
+                if (isset($app['hoard.driver']))
+                {
+                    $instance->setDriver($app['hoard.driver']);
+                }
+
                 return $instance->getBucket($app['hoard.bucket']);
             }
         );
