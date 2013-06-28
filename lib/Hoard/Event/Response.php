@@ -14,15 +14,17 @@ class Response
     protected $_ok = 0;
     protected $_code = 0;
     protected $_message = '';
+    protected $_debug = array();
 
 
     /**
      *
      */
-    public function __construct($code, $message)
+    public function __construct($code, $message, array $debug = array())
     {
         $this->_code = $code;
         $this->_message = $message;
+        $this->_debug = $debug;
         if ($code === self::OK) {
             $this->_ok = 1;
         }

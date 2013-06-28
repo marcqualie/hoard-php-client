@@ -13,6 +13,7 @@ class HttpDriver extends BaseDriver
     {
 
         // Get external interfaces
+        $debug = array();
         $options = $this->setOptions($options);
         $client = $this->client;
         $server = $client->getServer();
@@ -20,11 +21,13 @@ class HttpDriver extends BaseDriver
 
         // Payload (will verify input)
         $payload = new Payload($client->getBucket(), $event, $data);
+        $debug['payload'] = $payload->asArray();
         $post = $payload->asJSON();
 
         // API Endpoint
         $url_string = $server . '/api/track?apikey=' . $apikey;
         $url = parse_url($url_string);
+        $debug['url'] = $url_string;
 
         // Make Request
         $fp = fsockopen(
@@ -53,6 +56,7 @@ class HttpDriver extends BaseDriver
         }
 
         // Decode Response
+        $debug['async'] = $options['async'] ? 1 : 0;
         if ($response) {
             list($headers, $content) = explode("\n\n", str_replace("\r", '', $response), 2);
             $decoded = Utils::http_chunked_decode($content);
@@ -60,9 +64,14 @@ class HttpDriver extends BaseDriver
             if (! $response) {
                 return new Response(Response::ERROR, 'No Response Data');
             }
+
+            // Debug
+            $debug['response'] = $decoded;
         }
 
-        return new Response(Response::OK, 'Event Tracked');
+        // Response
+        $response = new Response(Response::OK, 'Event Tracked', isset($options['debug']) ? $debug : array());
+        return $response;
     }
 
 }

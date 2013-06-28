@@ -43,16 +43,10 @@ class Payload
         $payload = array(
             'v' => 1,
             't' => microtime(true),
+            'b' => $this->bucket->getName(),
             'e' => $this->event,
-            's' => $this->bucket->getName(),
             'd' => $this->data
         );
-        if (isset($this->data['$id'])) {
-            $payload['x'] = $this->data['$id'];
-            unset($this->data['$id']);
-        } elseif (class_exists('\MongoId')) {
-            $payload['x'] = new \MongoId();
-        }
         return $payload;
     }
 
