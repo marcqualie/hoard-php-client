@@ -28,7 +28,7 @@ class Payload
         if (! $event) {
             throw new Exception('Event name is required');
         }
-        if (! preg_match('/^[a-z0-9\-\.]+$/i', $event)) {
+        if (! preg_match('/^[a-z0-9_\-\.]+$/i', $event)) {
             throw new Exception('Invalid syntax for Event Name');
         }
 
