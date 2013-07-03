@@ -32,7 +32,7 @@ class Bucket
      * @return  Array Response data for the tracking request
      */
     public function track($event, array $data = array(), array $options = array()) {
-        return $this->client->driver->track($event, $data, $options);
+        return $this->client->driver->track($this, $event, $data, $options);
     }
 
 }

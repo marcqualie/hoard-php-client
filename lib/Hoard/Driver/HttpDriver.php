@@ -9,7 +9,7 @@ use Hoard\Event\Response;
 class HttpDriver extends BaseDriver
 {
 
-    public function track($event, array $data = array(), array $options = array())
+    public function track($bucket, $event, array $data = array(), array $options = array())
     {
 
         // Get external interfaces
@@ -20,7 +20,7 @@ class HttpDriver extends BaseDriver
         $apikey = $client->getApiKey();
 
         // Payload (will verify input)
-        $payload = new Payload($client->getBucket(), $event, $data);
+        $payload = new Payload($bucket, $event, $data);
         $debug['payload'] = $payload->asArray();
         $post = $payload->asJSON();
 

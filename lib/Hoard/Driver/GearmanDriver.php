@@ -32,7 +32,7 @@ class GearmanDriver extends BaseDriver {
         }
     }
 
-    public function track($event, array $data = array(), array $options = array())
+    public function track($bucket, $event, array $data = array(), array $options = array())
     {
         // Get external interfaces
         $options = $this->setOptions($options);
@@ -41,7 +41,7 @@ class GearmanDriver extends BaseDriver {
         $apikey = $client->getApiKey();
 
         // Payload (will verify input)
-        $payload = new Payload($client->getBucket(), $event, $data);
+        $payload = new Payload($bucket, $event, $data);
         $post = $payload->asJSON();
 
         // Set the gearman method depending on async or not
