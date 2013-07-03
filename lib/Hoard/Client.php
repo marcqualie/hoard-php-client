@@ -49,6 +49,18 @@ class Client {
 
 
     /**
+     * Set Bucket Instance
+     * @param  String $slug       Slug for the bucket
+     * @return Hoard\Bucket       Bucket Instance
+     */
+    public function setBucket($slug)
+    {
+        $this->bucket = new Bucket($this, $slug);
+        return $this->bucket;
+    }
+
+
+    /**
      * Get Bucket Instance
      * @param  String $slug       Slug for the bucket
      * @return Hoard\Bucket       Bucket Instance
@@ -58,8 +70,8 @@ class Client {
         if (! $slug) {
             return $this->bucket;
         }
-        $this->bucket = new Bucket($this, $slug);
-        return $this->bucket;
+        $bucket = new Bucket($this, $slug);
+        return $bucket;
     }
 
 
