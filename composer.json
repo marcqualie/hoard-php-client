@@ -9,18 +9,22 @@
         "analytics",
         "mongodb"
     ],
-    "homepage": "http://github.com/marcqualie/hoard-php-client",
+    "homepage": "https://github.com/marcqualie/hoard-php-client",
     "license": "MIT",
     "authors": [
         {
             "name": "Marc Qualie",
-            "email": "hoard@marcqualie.com",
+            "email": "marc@marcqualie.com",
             "homepage": "http://marcqualie.com",
             "role": "Developer"
         }
     ],
     "require": {
         "php": ">=5.3.0"
+    },
+    "suggest": {
+        "ext-curl": "*",
+        "ext-gearman": "*"
     },
     "autoload": {
         "psr-0": {
