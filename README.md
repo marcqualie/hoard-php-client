@@ -1,5 +1,9 @@
 # Hoard PHP Client
 
+[![Total Downloads](https://poser.pugx.org/marcqualie/hoard/downloads.png)](https://packagist.org/packages/marcqualie/hoard)
+[![Latest Stable Version](https://poser.pugx.org/marcqualie/hoard/v/stable.png)](https://packagist.org/packages/marcqualie/hoard)
+
+
 This is the client library to track events and get information back from a Hoard server
 
 
