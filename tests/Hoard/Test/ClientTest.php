@@ -4,6 +4,7 @@ namespace Hoard\Test;
 use Hoard\Client;
 use Hoard\Bucket;
 use Hoard\Driver\HttpDriver;
+use Hoard\Exception;
 
 class ClientTest extends TestCase
 {
@@ -47,11 +48,12 @@ class ClientTest extends TestCase
 
     /**
      * Make sure buckets are set and read properly
+     * @expectedException Exception
      */
     public function testDefaultBucket()
     {
         $client = new Client;
-        $this->assertEquals(null, $client->getBucket());
+        $client->getBucket();
     }
 
 
@@ -61,8 +63,9 @@ class ClientTest extends TestCase
     public function testSetBucket()
     {
         $client = new Client;
-        $bucket = new Bucket($client, 'test-bucket');
-        $client->setBucket($bucket);
-        $this->assertEquals($bucket, $client->getBucket());
+        $bucket1 = new Bucket($client, 'test-bucket-1');
+        $bucket2 = new Bucket($client, 'test-bucket-2');
+        $this->assertEquals($bucket1, $client->getBucket('test-bucket-1'));
+        $this->assertEquals($bucket2, $client->getBucket('test-bucket-2'));
     }
 }

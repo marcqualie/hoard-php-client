@@ -1,6 +1,7 @@
 <?php
 
 namespace Hoard;
+use Hoard\Exception;
 use Hoard\Driver\BaseDriver;
 use Hoard\Driver\HttpDriver;
 
@@ -11,7 +12,7 @@ class Client {
     protected $instance_id = null;
     protected $server = 'https://demo.hoardhq.com';
     protected $apikey = '';
-    protected $bucket = null;
+    protected $buckets = array();
 
 
     /**
@@ -49,27 +50,20 @@ class Client {
 
 
     /**
-     * Set Bucket Instance
-     * @param  String $slug       Slug for the bucket
-     * @return Hoard\Bucket       Bucket Instance
-     */
-    public function setBucket(Bucket $bucket)
-    {
-        $this->bucket = $bucket;
-    }
-
-
-    /**
      * Get Bucket Instance
      * @param  String $slug       Slug for the bucket
      * @return Hoard\Bucket       Bucket Instance
      */
     public function getBucket($slug = null)
     {
-        if (! $slug) {
-            return $this->bucket;
+        if ($slug === null) {
+            throw new Exception('No bucket name specified');
+        }
+        if (isset($this->buckets[$slug])) {
+            return $this->buckets[$slug];
         }
         $bucket = new Bucket($this, $slug);
+        $this->buckets[$bucket->getName()] = $bucket;
         return $bucket;
     }
 
