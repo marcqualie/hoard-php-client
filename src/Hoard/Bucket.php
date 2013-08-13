@@ -1,6 +1,7 @@
 <?php
 
 namespace Hoard;
+use Hoard\Client;
 
 class Bucket
 {
@@ -8,7 +9,7 @@ class Bucket
     protected $client;
     protected $name;
 
-    public function __construct($client, $name)
+    public function __construct(Client $client, $name)
     {
         $this->client = $client;
         $this->name = $name;
@@ -22,6 +23,15 @@ class Bucket
     public function getName()
     {
         return $this->name;
+    }
+
+
+    /**
+     * Get client instance
+     */
+    public function getClient()
+    {
+        return $this->client;
     }
 
 
