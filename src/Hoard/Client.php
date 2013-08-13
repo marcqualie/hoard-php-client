@@ -53,10 +53,9 @@ class Client {
      * @param  String $slug       Slug for the bucket
      * @return Hoard\Bucket       Bucket Instance
      */
-    public function setBucket($slug)
+    public function setBucket(Bucket $bucket)
     {
-        $this->bucket = new Bucket($this, $slug);
-        return $this->bucket;
+        $this->bucket = $bucket;
     }
 
 
@@ -82,6 +81,7 @@ class Client {
     {
         return $this->driver;
     }
+
 
     /**
      * Set Driver

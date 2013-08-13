@@ -62,7 +62,7 @@ class ClientTest extends TestCase
     {
         $client = new Client;
         $bucket = new Bucket($client, 'test-bucket');
-        $client->setBucket('test-bucket');
+        $client->setBucket($bucket);
         $this->assertEquals($bucket, $client->getBucket());
     }
 }
