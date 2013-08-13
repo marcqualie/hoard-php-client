@@ -2,6 +2,7 @@
 
 namespace Hoard\Test;
 use Hoard\Client;
+use Hoard\Bucket;
 use Hoard\Driver\HttpDriver;
 
 class ClientTest extends TestCase
@@ -13,9 +14,9 @@ class ClientTest extends TestCase
      */
     public function testClientInitializeBlank()
     {
-        $hoard = new Client;
-        $this->assertEquals('https://demo.hoardhq.com', $hoard->getServer());
-        $this->assertEquals('', $hoard->getApiKey());
+        $client = new Client;
+        $this->assertEquals('https://demo.hoardhq.com', $client->getServer());
+        $this->assertEquals('', $client->getApiKey());
     }
 
 
@@ -28,9 +29,9 @@ class ClientTest extends TestCase
             'server' => 'http://demo.hoardhq.com',
             'apikey' => '123456',
         );
-        $hoard = new Client($options);
-        $this->assertEquals($options['server'], $hoard->getServer());
-        $this->assertEquals($options['apikey'], $hoard->getApiKey());
+        $client = new Client($options);
+        $this->assertEquals($options['server'], $client->getServer());
+        $this->assertEquals($options['apikey'], $client->getApiKey());
     }
 
 
@@ -39,8 +40,29 @@ class ClientTest extends TestCase
      */
     public function testClientDefaultDriver()
     {
-        $hoard = new Client;
-        $this->assertTrue($hoard->getDriver() instanceof HttpDriver);
+        $client = new Client;
+        $this->assertTrue($client->getDriver() instanceof HttpDriver);
+    }
 
+
+    /**
+     * Make sure buckets are set and read properly
+     */
+    public function testDefaultBucket()
+    {
+        $client = new Client;
+        $this->assertEquals(null, $client->getBucket());
+    }
+
+
+    /**
+     * Buckets should be able to be set by name
+     */
+    public function testSetBucket()
+    {
+        $client = new Client;
+        $bucket = new Bucket($client, 'test-bucket');
+        $client->setBucket('test-bucket');
+        $this->assertEquals($bucket, $client->getBucket());
     }
 }
